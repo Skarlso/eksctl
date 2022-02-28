@@ -3,6 +3,7 @@ package nodebootstrap
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -79,6 +80,12 @@ func makeCustomAMIUserData(ng *api.NodeGroupBase, mimeBoundary string) (string, 
 
 	if ng.OverrideBootstrapCommand != nil {
 		scripts = append(scripts, *ng.OverrideBootstrapCommand)
+	} else if ng.KubeletExtraConfig != nil {
+		wrapperScript, err := makeManagedKubeletExtraConfig(ng.KubeletExtraConfig)
+		if err != nil {
+			return "", err
+		}
+		scripts = append(scripts, wrapperScript)
 	}
 
 	if len(scripts) == 0 {
@@ -100,6 +107,23 @@ KUBELET_CONFIG=/etc/kubernetes/kubelet/kubelet-config.json
 `
 	script += fmt.Sprintf(`echo "$(jq ".maxPods=%v" $KUBELET_CONFIG)" > $KUBELET_CONFIG`, maxPods)
 	return script
+}
+
+func makeManagedKubeletExtraConfig(config *api.InlineDocument) (string, error) {
+	data, err := json.Marshal(config)
+	if err != nil {
+		return "", err
+	}
+	script := fmt.Sprintf(`#!/bin/sh
+set -ex
+KUBELET_CONFIG=/etc/kubernetes/kubelet/kubelet-config.json
+
+KUBELET_EXTRA_CONFIG=%s
+echo "eksctl: merging user options into kubelet-config.json"
+jq -s '.[0] * .[1]' "${KUBELET_CONFIG}" "${KUBELET_EXTRA_CONFIG}" > "${KUBELET_CONFIG}"
+`, string(data))
+
+	return script, nil
 }
 
 func createMimeMessage(writer io.Writer, scripts, cloudboots []string, mimeBoundary string) error {

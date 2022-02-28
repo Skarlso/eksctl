@@ -970,8 +970,8 @@ func ValidateManagedNodeGroup(index int, ng *ManagedNodeGroup) error {
 		if ng.AMIFamily != NodeImageFamilyAmazonLinux2 {
 			return errors.Errorf("cannot set amiFamily to %s when using a custom AMI", ng.AMIFamily)
 		}
-		if ng.OverrideBootstrapCommand == nil {
-			return errors.Errorf("%s.overrideBootstrapCommand is required when using a custom AMI (%s.ami)", path, path)
+		if ng.OverrideBootstrapCommand == nil && ng.KubeletExtraConfig == nil {
+			return errors.Errorf("either %[1]s.overrideBootstrapCommand or %[1]s.overrideBootstrapCommand is required when using a custom AMI (%[1]s.ami)", path)
 		}
 		notSupportedWithCustomAMIErr := func(field string) error {
 			return errors.Errorf("%s.%s is not supported when using a custom AMI (%s.ami)", path, field, path)
@@ -987,7 +987,7 @@ func ValidateManagedNodeGroup(index int, ng *ManagedNodeGroup) error {
 		}
 
 	case ng.OverrideBootstrapCommand != nil:
-		return errors.Errorf("%s.overrideBootstrapCommand can only be set when a custom AMI (%s.ami) is specified", path, path)
+		return errors.Errorf("%[1]s.overrideBootstrapCommand can only be set when a custom AMI (%[1]s.ami) is specified", path)
 	}
 
 	return nil

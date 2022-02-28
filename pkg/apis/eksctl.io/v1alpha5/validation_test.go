@@ -1550,7 +1550,11 @@ var _ = Describe("ClusterConfig validation", func() {
 					NodeGroupBase: &api.NodeGroupBase{
 						OverrideBootstrapCommand: &cmd,
 					}},
-				"KubeletExtraConfig": {KubeletExtraConfig: &doc},
+				"KubeletExtraConfig": {
+					NodeGroupBase: &api.NodeGroupBase{
+						KubeletExtraConfig: &doc,
+					},
+				},
 				"overlapping Bottlerocket settings": {
 					NodeGroupBase: &api.NodeGroupBase{
 						Bottlerocket: &api.NodeGroupBottlerocket{
@@ -1663,7 +1667,9 @@ var _ = Describe("ClusterConfig validation", func() {
 
 			ngs := map[string]*api.NodeGroup{
 				"OverrideBootstrapCommand": {NodeGroupBase: &api.NodeGroupBase{OverrideBootstrapCommand: &cmd}},
-				"KubeletExtraConfig":       {KubeletExtraConfig: &doc, NodeGroupBase: &api.NodeGroupBase{}},
+				"KubeletExtraConfig": {NodeGroupBase: &api.NodeGroupBase{
+					KubeletExtraConfig: &doc,
+				}},
 			}
 
 			for name, ng := range ngs {

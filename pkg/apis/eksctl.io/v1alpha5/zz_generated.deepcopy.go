@@ -1006,10 +1006,6 @@ func (in *NodeGroup) DeepCopyInto(out *NodeGroup) {
 		*out = new(NodeGroupUpdateConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.KubeletExtraConfig != nil {
-		in, out := &in.KubeletExtraConfig, &out.KubeletExtraConfig
-		*out = (*in).DeepCopy()
-	}
 	if in.ContainerRuntime != nil {
 		in, out := &in.ContainerRuntime, &out.ContainerRuntime
 		*out = new(string)
@@ -1185,6 +1181,10 @@ func (in *NodeGroupBase) DeepCopyInto(out *NodeGroupBase) {
 		in, out := &in.EnableDetailedMonitoring, &out.EnableDetailedMonitoring
 		*out = new(bool)
 		**out = **in
+	}
+	if in.KubeletExtraConfig != nil {
+		in, out := &in.KubeletExtraConfig, &out.KubeletExtraConfig
+		*out = (*in).DeepCopy()
 	}
 	return
 }

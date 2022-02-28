@@ -974,10 +974,6 @@ type NodeGroup struct {
 	// +optional
 	ClusterDNS string `json:"clusterDNS,omitempty"`
 
-	// [Customize `kubelet` config](/usage/customizing-the-kubelet/)
-	// +optional
-	KubeletExtraConfig *InlineDocument `json:"kubeletExtraConfig,omitempty"`
-
 	// ContainerRuntime defines the runtime (CRI) to use for containers on the node
 	// +optional
 	ContainerRuntime *string `json:"containerRuntime,omitempty"`
@@ -1388,6 +1384,10 @@ type NodeGroupBase struct {
 	// Enable EC2 detailed monitoring
 	// +optional
 	EnableDetailedMonitoring *bool `json:"enableDetailedMonitoring,omitempty"`
+
+	// [Customize `kubelet` config](/usage/customizing-the-kubelet/)
+	// +optional
+	KubeletExtraConfig *InlineDocument `json:"kubeletExtraConfig,omitempty"`
 }
 
 // Placement specifies placement group information

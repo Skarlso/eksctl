@@ -4,9 +4,8 @@
 
 System resources can be reserved through the configuration of the kubelet. This is recommended, because in the case
 of resource starvation the kubelet might not be able to evict pods and eventually make the node become `NotReady`. To
- do this, config files can include the `kubeletExtraConfig` field which accepts a free form yaml that will be embedded
- into the `kubelet.yaml`.
-
+do this, config files can include the `kubeletExtraConfig` field which accepts a free form yaml that will be embedded
+into the `kubelet.yaml`.
 
 Some fields in the `kubelet.yaml` are set by eksctl and therefore are not overwritable, such as the `address`,
 `clusterDomain`, `authentication`, `authorization`, or `serverTLSBootstrap`.
@@ -47,14 +46,14 @@ nodeGroups:
 
 In this example, given instances of type `m5a.xlarge` which have 4 vCPUs and 16GiB of memory, the `Allocatable` amount
 of CPUs would be 3.4 and 15.4 GiB of memory. It is important to know that the values specified in the config file for 
-the the fields in `kubeletExtraconfig` will completely overwrite the default values specified by eksctl. 
+the fields in `kubeletExtraconfig` will completely overwrite the default values specified by eksctl. 
 However, omitting one or more `kubeReserved` parameters will cause the missing parameters to be defaulted to sane 
 values based on the aws instance type being used.
 
 ### A note on the `kubeReserved` calculation for NodeGroups with mixed instances
 
-While it is generally recommended to configure a mixed instance NodeGroup to use instances with the same CPU and RAM
-configuration; that's not a strict requirement. Therefore the `kubeReserved` calculation uses the _smallest instance_ in
+While it is generally recommended configuring a mixed instance NodeGroup to use instances with the same CPU and RAM
+configuration; that's not a strict requirement. Therefore, the `kubeReserved` calculation uses the _smallest instance_ in
 the `InstanceDistribution.InstanceTypes` field. This way NodeGroups with disparate instance types will not reserve too
 many resources on the smallest instance. However, this could lead to a reservation that is too small for the largest
 instance type.

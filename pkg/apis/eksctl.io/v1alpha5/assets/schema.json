@@ -1028,6 +1028,11 @@
           "description": "specifies a list of instance types",
           "x-intellij-html-description": "specifies a list of instance types"
         },
+        "kubeletExtraConfig": {
+          "$ref": "#/definitions/InlineDocument",
+          "description": "[Customize `kubelet` config](/usage/customizing-the-kubelet/)",
+          "x-intellij-html-description": "<a href=\"/usage/customizing-the-kubelet/\">Customize <code>kubelet</code> config</a>"
+        },
         "labels": {
           "additionalProperties": {
             "type": "string"
@@ -1198,6 +1203,7 @@
         "instanceSelector",
         "bottlerocket",
         "enableDetailedMonitoring",
+        "kubeletExtraConfig",
         "instanceTypes",
         "spot",
         "taints",
@@ -1540,6 +1546,7 @@
         "instanceSelector",
         "bottlerocket",
         "enableDetailedMonitoring",
+        "kubeletExtraConfig",
         "instancesDistribution",
         "asgMetricsCollection",
         "cpuCredits",
@@ -1548,7 +1555,6 @@
         "taints",
         "updateConfig",
         "clusterDNS",
-        "kubeletExtraConfig",
         "containerRuntime",
         "disableASGTagPropagation",
         "maxInstanceLifetime"

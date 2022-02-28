@@ -4,10 +4,11 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
-	api "github.com/weaveworks/eksctl/pkg/apis/eksctl.io/v1alpha5"
 	"github.com/weaveworks/goformation/v4/cloudformation/cloudformation"
 	gfnec2 "github.com/weaveworks/goformation/v4/cloudformation/ec2"
 	gfnt "github.com/weaveworks/goformation/v4/cloudformation/types"
+
+	api "github.com/weaveworks/eksctl/pkg/apis/eksctl.io/v1alpha5"
 )
 
 func (m *ManagedNodeGroupResourceSet) makeLaunchTemplateData() (*gfnec2.LaunchTemplate_LaunchTemplateData, error) {
@@ -17,6 +18,7 @@ func (m *ManagedNodeGroupResourceSet) makeLaunchTemplateData() (*gfnec2.LaunchTe
 		MetadataOptions:   makeMetadataOptions(mng.NodeGroupBase),
 	}
 
+	// TODO: hopefully this fails -- it did not, add a test case.
 	userData, err := m.bootstrapper.UserData()
 	if err != nil {
 		return nil, err
